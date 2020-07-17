@@ -10,7 +10,6 @@ using namespace std;
 
 void trimLeftTrailingSpaces(string &input) {
   input.erase(input.begin(), find_if(input.begin(), input.end(),
-
                                      [](int ch) { return !isspace(ch); }));
 }
 
