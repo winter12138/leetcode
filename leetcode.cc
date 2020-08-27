@@ -8,12 +8,12 @@
 
 using namespace std;
 
-void trimLeftTrailingSpaces(string &input) {
+void trimLeftTrailingSpaces(string& input) {
   input.erase(input.begin(), find_if(input.begin(), input.end(),
                                      [](int ch) { return !isspace(ch); }));
 }
 
-void trimRightTrailingSpaces(string &input) {
+void trimRightTrailingSpaces(string& input) {
   input.erase(
       find_if(input.rbegin(), input.rend(), [](int ch) { return !isspace(ch); })
           .base(),
@@ -45,7 +45,7 @@ vector<vector<int>> stringToIntegerMatrix(string input) {
   regex re(", *(?=\\[)");
   vector<string> v(sregex_token_iterator(begin(input), end(input), re, -1),
                    sregex_token_iterator());
-  for (auto &item : v) {
+  for (auto& item : v) {
     output.push_back(stringToIntegerVector(item));
   }
   return output;
@@ -66,13 +66,29 @@ vector<string> stringToStringVector(string input) {
   return output;
 }
 
-ListNode *stringToListNode(string input) {
+vector<vector<string>> stringToStringMatrix(string input) {
+  vector<vector<string>> output;
+  trimLeftTrailingSpaces(input);
+  trimRightTrailingSpaces(input);
+  input = input.substr(1, input.length() - 2);
+  //[[1,4,7,11,15], [2,5,8,12,19], [3,6,9,16,22],
+  //[10,13,14,17,24],[18,21,23,26,30]]
+  regex re(", *(?=\\[)");
+  vector<string> v(sregex_token_iterator(begin(input), end(input), re, -1),
+                   sregex_token_iterator());
+  for (auto& item : v) {
+    output.push_back(stringToStringVector(item));
+  }
+  return output;
+}
+
+ListNode* stringToListNode(string input) {
   // Generate list from the input
   vector<int> list = stringToIntegerVector(input);
 
   // Now convert that list into linked list
-  ListNode *dummyRoot = new ListNode(0);
-  ListNode *ptr = dummyRoot;
+  ListNode* dummyRoot = new ListNode(0);
+  ListNode* ptr = dummyRoot;
   for (int item : list) {
     ptr->next = new ListNode(item);
     ptr = ptr->next;
@@ -82,7 +98,7 @@ ListNode *stringToListNode(string input) {
   return ptr;
 }
 
-void prettyPrintLinkedList(ListNode *node) {
+void prettyPrintLinkedList(ListNode* node) {
   while (node && node->next) {
     cout << node->val << "->";
     node = node->next;
@@ -95,21 +111,21 @@ void prettyPrintLinkedList(ListNode *node) {
   }
 }
 
-ostream &operator<<(ostream &os, ListNode *node) {
+ostream& operator<<(ostream& os, ListNode* node) {
   prettyPrintLinkedList(node);
   return os;
 }
 
-string treeNodeToString(TreeNode *root) {
+string treeNodeToString(TreeNode* root) {
   if (root == nullptr) {
     return "[]";
   }
 
   string output = "";
-  queue<TreeNode *> q;
+  queue<TreeNode*> q;
   q.push(root);
   while (!q.empty()) {
-    TreeNode *node = q.front();
+    TreeNode* node = q.front();
     q.pop();
 
     if (node == nullptr) {
@@ -124,7 +140,7 @@ string treeNodeToString(TreeNode *root) {
   return "[" + output.substr(0, output.length() - 2) + "]";
 }
 
-TreeNode *stringToTreeNode(string input) {
+TreeNode* stringToTreeNode(string input) {
   trimLeftTrailingSpaces(input);
   trimRightTrailingSpaces(input);
   input = input.substr(1, input.length() - 2);
@@ -137,12 +153,12 @@ TreeNode *stringToTreeNode(string input) {
   ss.str(input);
 
   getline(ss, item, ',');
-  TreeNode *root = new TreeNode(stoi(item));
-  queue<TreeNode *> nodeQueue;
+  TreeNode* root = new TreeNode(stoi(item));
+  queue<TreeNode*> nodeQueue;
   nodeQueue.push(root);
 
   while (true) {
-    TreeNode *node = nodeQueue.front();
+    TreeNode* node = nodeQueue.front();
     nodeQueue.pop();
 
     if (!getline(ss, item, ',')) {
@@ -170,7 +186,7 @@ TreeNode *stringToTreeNode(string input) {
   return root;
 }
 
-void prettyPrintTree(TreeNode *node, string prefix = "", bool isLeft = true) {
+void prettyPrintTree(TreeNode* node, string prefix = "", bool isLeft = true) {
   if (node == nullptr) {
     cout << "Empty tree";
     return;
@@ -187,7 +203,7 @@ void prettyPrintTree(TreeNode *node, string prefix = "", bool isLeft = true) {
   }
 }
 
-ostream &operator<<(ostream &os, TreeNode *node) {
+ostream& operator<<(ostream& os, TreeNode* node) {
   prettyPrintTree(node);
   return os;
 }
